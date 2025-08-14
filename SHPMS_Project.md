@@ -93,7 +93,7 @@ VALUES ('General Checkup', 500.00);
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")
+@udf.connection(argName="sqlDB", alias="SHPMSDB") '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
 @udf.function()
 def add_patient(sqlDB, firstName, lastName, dob, gender, contactNumber):
     connection = sqlDB.connect()
@@ -113,7 +113,7 @@ def add_patient(sqlDB, firstName, lastName, dob, gender, contactNumber):
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")
+@udf.connection(argName="sqlDB", alias="SHPMSDB") '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
 @udf.function()
 def schedule_appointment(sqlDB, patientID, doctorID, appointmentDate, appointmentTime, status):
     if status not in ['Scheduled', 'Completed', 'Cancelled']:
@@ -135,7 +135,7 @@ def schedule_appointment(sqlDB, patientID, doctorID, appointmentDate, appointmen
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")
+@udf.connection(argName="sqlDB", alias="SHPMSDB") '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
 @udf.function()
 def delete_appointment(sqlDB, appointmentID):
     connection = sqlDB.connect()
@@ -152,7 +152,7 @@ def delete_appointment(sqlDB, appointmentID):
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")
+@udf.connection(argName="sqlDB", alias="SHPMSDB")  '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
 @udf.function()
 def mark_bill_paid(sqlDB, billID):
     connection = sqlDB.connect()
@@ -169,7 +169,7 @@ def mark_bill_paid(sqlDB, billID):
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")
+@udf.connection(argName="sqlDB", alias="SHPMSDB")  '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
 @udf.function()
 def add_patient_with_first_appointment(sqlDB, firstName, lastName, dob, gender, contactNumber, doctorID, appointmentDate, appointmentTime, status):
     if status not in ['Scheduled', 'Completed', 'Cancelled']:
@@ -196,7 +196,7 @@ def add_patient_with_first_appointment(sqlDB, firstName, lastName, dob, gender, 
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")
+@udf.connection(argName="sqlDB", alias="SHPMSDB")  '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
 @udf.function()
 def add_doctor(sqlDB, firstName, lastName, specialization, contactNumber):
     connection = sqlDB.connect()
@@ -216,7 +216,7 @@ def add_doctor(sqlDB, firstName, lastName, specialization, contactNumber):
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")
+@udf.connection(argName="sqlDB", alias="SHPMSDB")  '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
 @udf.function()
 def add_treatment(sqlDB, treatmentName, cost):
     connection = sqlDB.connect()
