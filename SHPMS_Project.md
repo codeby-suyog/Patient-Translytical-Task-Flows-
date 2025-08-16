@@ -1,28 +1,27 @@
 # Smart Hospital Patient Management System (SHPMS)
 
-## 1. Introduction
-The **Smart Hospital Patient Management System (SHPMS)** is a database and function-based system designed to manage patients, doctors, appointments, treatments, and billing within a healthcare environment. This project integrates with Microsoft Fabric to enable real-time operations via Fabric Functions and Power BI.
+---
+
+## Table of Contents
+1. [Database & Table Creation Scripts](#database--table-creation-scripts)
+2. [Insert Sample Data](#insert-sample-data)
+3. [Fabric Functions (Python)](#fabric-functions-python)
+   - Add Patient
+   - Schedule Appointment
+   - Delete Appointment
+   - Mark Bill as Paid
+   - Add Patient with First Appointment
+   - Add Doctor
+   - Add Treatment
+4. [Sample JSON Calls](#sample-json-calls)
 
 ---
 
-## 2. Project Setup Instructions
-### Prerequisites
-- Microsoft Fabric workspace
-- SQL Endpoint enabled
-- ODBC Driver 18 for SQL Server
-- Python environment with `fabric` module
-- Power BI (optional for reporting)
-
-### Steps
-1. Run the SQL scripts in section **3** to create the database and tables.
-2. Deploy the Python Fabric Functions in section **5** into your Fabric environment.
-3. Test using the JSON request bodies from section **6**.
-
----
-
-## 3. Database & Table Creation Scripts
+## Database & Table Creation Scripts
 
 ```sql
+-- Create required database and main tables for SHPMS
+
 CREATE DATABASE SHPMS_DB;
 GO
 
@@ -71,9 +70,11 @@ CREATE TABLE Billing (
 
 ---
 
-## 4. Insert Sample Data
+## Insert Sample Data
 
 ```sql
+-- Demonstration sample records for each core entity
+
 INSERT INTO Patients (FirstName, LastName, DOB, Gender, ContactNumber)
 VALUES ('John', 'Doe', '1985-05-15', 'M', '9876543210');
 
@@ -86,14 +87,16 @@ VALUES ('General Checkup', 500.00);
 
 ---
 
-## 5. Fabric Functions
+## Fabric Functions (Python)
 
-### Add Patient
+### 1. Add Patient
+
 ```python
+# Adds a new patient record to the Patients table.
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB") '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
+@udf.connection(argName="sqlDB", alias="SHPMSDB") 
 @udf.function()
 def add_patient(sqlDB, firstName, lastName, dob, gender, contactNumber):
     connection = sqlDB.connect()
@@ -108,12 +111,14 @@ def add_patient(sqlDB, firstName, lastName, dob, gender, contactNumber):
     return "Patient added successfully"
 ```
 
-### Schedule Appointment
+### 2. Schedule Appointment
+
 ```python
+# Schedules a new appointment for a patient with a doctor.
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB") '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
+@udf.connection(argName="sqlDB", alias="SHPMSDB") 
 @udf.function()
 def schedule_appointment(sqlDB, patientID, doctorID, appointmentDate, appointmentTime, status):
     if status not in ['Scheduled', 'Completed', 'Cancelled']:
@@ -130,12 +135,14 @@ def schedule_appointment(sqlDB, patientID, doctorID, appointmentDate, appointmen
     return "Appointment scheduled"
 ```
 
-### Delete Appointment
+### 3. Delete Appointment
+
 ```python
+# Removes an appointment from the schedule based on AppointmentID.
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB") '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
+@udf.connection(argName="sqlDB", alias="SHPMSDB")
 @udf.function()
 def delete_appointment(sqlDB, appointmentID):
     connection = sqlDB.connect()
@@ -147,12 +154,14 @@ def delete_appointment(sqlDB, appointmentID):
     return "Appointment deleted"
 ```
 
-### Mark Bill as Paid
+### 4. Mark Bill as Paid
+
 ```python
+# Updates a bill status to 'Paid' in the Billing table.
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")  '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
+@udf.connection(argName="sqlDB", alias="SHPMSDB")
 @udf.function()
 def mark_bill_paid(sqlDB, billID):
     connection = sqlDB.connect()
@@ -164,12 +173,14 @@ def mark_bill_paid(sqlDB, billID):
     return "Bill marked as paid"
 ```
 
-### Add Patient with First Appointment
+### 5. Add Patient with First Appointment
+
 ```python
+# Adds a new patient and immediately schedules their first appointment.
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")  '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
+@udf.connection(argName="sqlDB", alias="SHPMSDB")
 @udf.function()
 def add_patient_with_first_appointment(sqlDB, firstName, lastName, dob, gender, contactNumber, doctorID, appointmentDate, appointmentTime, status):
     if status not in ['Scheduled', 'Completed', 'Cancelled']:
@@ -191,12 +202,14 @@ def add_patient_with_first_appointment(sqlDB, firstName, lastName, dob, gender, 
     return "Patient and appointment added successfully"
 ```
 
-### Add Doctor
+### 6. Add Doctor
+
 ```python
+# Adds a new doctor to the Doctors table.
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")  '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
+@udf.connection(argName="sqlDB", alias="SHPMSDB")
 @udf.function()
 def add_doctor(sqlDB, firstName, lastName, specialization, contactNumber):
     connection = sqlDB.connect()
@@ -211,12 +224,14 @@ def add_doctor(sqlDB, firstName, lastName, specialization, contactNumber):
     return "Doctor added successfully"
 ```
 
-### Add Treatment
+### 7. Add Treatment
+
 ```python
+# Adds a new treatment type and its cost to the Treatments table.
 import fabric.functions as fn
 udf = fn.UserDataFunctions()
 
-@udf.connection(argName="sqlDB", alias="SHPMSDB")  '''uses SHPMSDB as the connection alias to your SQL database. Please replace "SHPMSDB" with your own SQL database connection alias if it is different.'''
+@udf.connection(argName="sqlDB", alias="SHPMSDB")
 @udf.function()
 def add_treatment(sqlDB, treatmentName, cost):
     connection = sqlDB.connect()
@@ -233,10 +248,10 @@ def add_treatment(sqlDB, treatmentName, cost):
 
 ---
 
-## 6. Sample JSON Calls
+## Sample JSON Calls
 
-### Add Patient
 ```json
+// Add Patient
 {
   "firstName": "Jane",
   "lastName": "Doe",
@@ -246,8 +261,8 @@ def add_treatment(sqlDB, treatmentName, cost):
 }
 ```
 
-### Schedule Appointment
 ```json
+// Schedule Appointment
 {
   "patientID": 1,
   "doctorID": 1,
@@ -257,24 +272,16 @@ def add_treatment(sqlDB, treatmentName, cost):
 }
 ```
 
-### Delete Appointment
 ```json
+// Delete Appointment
 {
   "appointmentID": 1
 }
 ```
 
-### Mark Bill Paid
 ```json
+// Mark Bill Paid
 {
   "billID": 1
 }
 ```
-
----
-
-## 7. Notes & Recommendations
-- Always validate foreign key values before inserting (DoctorID, PatientID).
-- Ensure proper error handling in Fabric Functions.
-- Use parameterized queries to prevent SQL injection.
-- Extend tables for more detailed records (e.g., address, medical history).
