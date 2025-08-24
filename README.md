@@ -9,7 +9,6 @@ The **Smart Hospital Patient Management System (SHPMS)** is a database and funct
 ### Prerequisites
 - Microsoft Fabric workspace
 - SQL Endpoint enabled
-- ODBC Driver 18 for SQL Server
 - Python environment with `fabric` module
 - Power BI (optional for reporting)
 
